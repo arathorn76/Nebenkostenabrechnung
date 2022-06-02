@@ -1,0 +1,13 @@
+Haus hat Wohnungen, Adresse
+Wohnungen haben Mieter (Zeitabhängig) und Zähler, Größe, Bezeichnung, Lage im Haus
+Zähler haben Zählerstände mit Zeitstempel
+Mieter haben Wohnung (Zeitabhängig), Anzahl Personen, Vorher-Adresse, Nachher-Adresse, Namen
+Pseudo-Mieter "Leerstand"
+Diverse Kosten mit div. Verteilungen
+Kosten mit direkter Zuteilung zu Mieter/Wohnung
+Brieferstellung
+Übersichtsblatt der Abrechnung
+Abrechnung für bestimmten Zeitraum (meist Jahr)
+
+Graphische Darstellung: Leiste links mit div. Fenstern rechts
+Je Thema ein Fenster

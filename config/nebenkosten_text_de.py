@@ -1,0 +1,12 @@
+"""German textfile"""
+
+title = "Nebenkostenabrechnung"
+button_prev = "Vorheriger"
+button_next = "Nächster"
+button_new = "Neuer Mieter"
+button_change = "Änderungen übernehmen"
+button_delete = "Eintrag löschen"
+button_load_file = "Aus Datei lesen"
+button_save_file = "In Datei sichern"
+anrede = "Anrede"
+name = "Name"
