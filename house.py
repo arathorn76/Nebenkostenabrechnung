@@ -1,8 +1,8 @@
 """Module providing stuff for houses."""
 
-import pickle
-
-housefile = "data\\houses.pickle"
+import db
+import sqlite3
+import config.settings as settings
 
 
 ##############################################################################
@@ -13,30 +13,55 @@ class House:
     
     Context: calculating side costs for renters"""
     
-    def __init__(self, name, streat_and_number = "21 Jump Street", zipcode="12345", city="Stadt"):
+    def __init__(self, id = None, name='neues Haus', adress_id = None, size = 0):
+        self.id = id
         self.name = name
-        self.streat_and_number = streat_and_number
-        self.zipcode = zipcode
-        self.city = city
+        self.size = size
+        self.adress_id = adress_id
 
-    def get_adress(self):
-        return self.name + "\n" + self.streat_and_number + "\n" + self.zipcode + " " + self.city
+    def db_insert(self):
+        verbindung = sqlite3.connect(settings.dbfile)
+        zeiger = verbindung.cursor()
+        sql_string = "insert into houses values(?, ?, ?, ?)"
+        zeiger.execute(sql_string, (
+            None,
+            self.name,
+            self.adress_id,
+            self.size
+        ))
+        verbindung.commit()
+        self.id = zeiger.lastrowid
+        verbindung.close()
+
+    def db_update(self):
+        verbindung = sqlite3.connect(settings.dbfile)
+        zeiger = verbindung.cursor()
+        sql_string = """update houses set name=?, adress_id=?,  size=? where id=?"""
+        zeiger.execute(sql_string, (
+            self.name,
+            self.adress_id,
+            self.size,
+            self.id
+        ))
+        verbindung.commit()
+        verbindung.close()
+
+    def db_delete(self):
+        verbindung = sqlite3.connect(settings.dbfile)
+        zeiger = verbindung.cursor()
+        sql_string = "delete from houses where id = ?"
+        zeiger.execute(sql_string, (self.id,))
+        verbindung.commit()
+        verbindung.close()
 
 # Persistenz
 def load_houses():
     global houses
-    try:
-        with open(housefile, "rb") as f:
-            houses = pickle.load(f)
-    except FileNotFoundError:
-        save_houses()
-
-def save_houses():
-    global houses
-    with open(housefile, "wb") as f:
-        pickle.dump(houses, f)
-
+    houses.clear()
+    for h in db.read_houses():
+        houses.append(House(*h))
 
 
 #Initialisierung des Moduls
 houses = list()
+load_houses()
